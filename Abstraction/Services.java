@@ -21,9 +21,9 @@ public class Services
 
     protected Services(){}
 
-    public static void register(String nom, Provider p)
+    public static void register(Provider p)
     {
-            providers.put(nom,p);
+            providers.putIfAbsent(p.getNom(),p);
     }
 
     public static Service newInstance(String nom)   throws IllegalArgumentException

@@ -30,7 +30,7 @@ public class CryptoManager extends Services
             {
                 try {
                     Class c = Class.forName(nomClasse);
-                    return (Cle) c.newInstance();
+                    return (Cle) c.getDeclaredConstructor().newInstance();
                 }
                 catch (Exception ex) {
                     System.err.println("Erreur d'instantiation de "+nomClasse+": "+ex.getMessage());
