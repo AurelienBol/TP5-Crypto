@@ -13,5 +13,10 @@ import Abstraction.Provider;
  */
 public class CryptoProvider extends Provider
 {
-    private String nom;
+    protected String nom;
+
+    @Override
+    public String getNom() {
+        return nom;
+    }
 }

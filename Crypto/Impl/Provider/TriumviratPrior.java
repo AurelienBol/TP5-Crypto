@@ -13,8 +13,8 @@ import Crypto.Abstraction.CryptoProvider;
  */
 public class TriumviratPrior extends CryptoProvider
 {
-    static 
+    public TriumviratPrior ()
     {
-        
+        nom = "TriumviratPrior";
     }
 }

@@ -16,4 +16,6 @@ public abstract class Provider
         //return un service parmit la liste
         return null;
     }
+    
+    public abstract String getNom();
 }

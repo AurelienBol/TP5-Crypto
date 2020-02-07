@@ -13,9 +13,8 @@ import Crypto.Abstraction.CryptoProvider;
  */
 public class LinearAlgebra extends CryptoProvider
 {
-    static 
+    public LinearAlgebra ()
     {
-        
+        nom = "LinearAlgebra";
     }
 }
-

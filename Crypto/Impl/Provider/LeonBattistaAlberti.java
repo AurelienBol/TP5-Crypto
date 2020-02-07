@@ -13,8 +13,8 @@ import Crypto.Abstraction.CryptoProvider;
  */
 public class LeonBattistaAlberti extends CryptoProvider
 {
-    static 
+    public LeonBattistaAlberti ()
     {
-        
+        nom = "LeonBattistaAlberti";
     }
 }
