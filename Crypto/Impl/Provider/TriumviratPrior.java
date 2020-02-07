@@ -17,4 +17,9 @@ public class TriumviratPrior extends CryptoProvider
     {
         nom = "TriumviratPrior";
     }
+    
+    public static Service newService()
+    {
+        return new CryptoCaesar();
+    }
 }
