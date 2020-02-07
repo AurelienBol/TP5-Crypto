@@ -13,12 +13,12 @@ import Crypto.Abstraction.Cle;
  * @author Julie
  */
 public class CryptoCaesar implements Chiffrement {
-    private CryptoCaesar decalage;
+    private CleCaesar decalage;
     
     @Override
     public void init(Cle k) {
-        if(k instanceof CryptoCaesar == true)
-            decalage = (CryptoCaesar)k; // faire du dynamic cast
+        if(k instanceof CleCaesar == true)
+            decalage = (CleCaesar)k; // faire du dynamic cast
         else
             System.err.println("Erreur de cle");
     }
