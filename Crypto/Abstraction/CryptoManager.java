@@ -45,8 +45,7 @@ public class CryptoManager extends Services
         //providers
         try {
             Properties props = new Properties();
-            //TO DO: FICHIER PROPERTIES
-            FileInputStream fisProv = new FileInputStream("FICHIER");
+            FileInputStream fisProv = new FileInputStream("providers.properties");
             props.load(fisProv);
 
             Enumeration e = props.propertyNames();
@@ -73,7 +72,7 @@ public class CryptoManager extends Services
         
         //cles
         try {
-            FileInputStream fisCles = new FileInputStream("FICHIER2");
+            FileInputStream fisCles = new FileInputStream("cles.properties");
             cles.load(fisCles);
         }
         catch (IOException ex) {

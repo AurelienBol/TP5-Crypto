@@ -7,6 +7,8 @@ package Abstraction;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,16 +34,27 @@ public class Services
 
             if(p == null)
                     throw new IllegalArgumentException("Provider " + nom + " non trouvé");
-
-            return p.newService();
+            try
+            {
+                Class c = p.getClass();
+                Method m = c.getMethod("newService", null);
+                Service s = (Service) m.invoke(null, null);
+                
+                return s;
+            }
+            catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
+            {
+                throw new IllegalArgumentException( "Problème d'accès à la méthode new Service: "+
+                                                    e.getMessage());
+            }
+            
     }
 
     static
     {
         try {
             Properties props = new Properties();
-            //TO DO: FICHIER PROPERTIES
-            FileInputStream fis = new FileInputStream("FICHIER");
+            FileInputStream fis = new FileInputStream("providers.properties");
             props.load(fis);
 
             Enumeration e = props.propertyNames();
