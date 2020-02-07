@@ -17,4 +17,9 @@ public class LinearAlgebra extends CryptoProvider
     {
         nom = "LinearAlgebra";
     }
+    
+    public static Service newService()
+    {
+        return new HillCipher();
+    }
 }
