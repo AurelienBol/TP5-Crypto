@@ -17,4 +17,9 @@ public class LeonBattistaAlberti extends CryptoProvider
     {
         nom = "LeonBattistaAlberti";
     }
+    
+    public static Service newService()
+    {
+        return new ChiffrePolyAlberti();
+    }
 }
