@@ -40,16 +40,13 @@ public class CryptoCaesar implements Chiffrement {
                 }
                 tableauCryptage.append((char)resultat);
             } else if (lettresPlainText[i] >= 'A' && lettresPlainText[i] <= 'Z')
-            {
-                if (lettresPlainText[i] >= 'a' && lettresPlainText[i] <= 'z')
-                {  
-                    resultat = lettresPlainText[i] + decalage.getDecalage();
-                    if(resultat > 90)
-                    {
-                        resultat -= 26;
-                    }
-                    tableauCryptage.append((char)resultat);
+            { 
+                resultat = lettresPlainText[i] + decalage.getDecalage();
+                if(resultat > 90)
+                {
+                    resultat -= 26;
                 }
+                tableauCryptage.append((char)resultat);
             } else 
             {
                 tableauCryptage.append(lettresPlainText);
