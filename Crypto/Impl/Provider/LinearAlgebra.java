@@ -5,6 +5,7 @@
  */
 package Crypto.Impl.Provider;
 
+import Abstraction.Service;
 import Crypto.Abstraction.CryptoProvider;
 
 /**

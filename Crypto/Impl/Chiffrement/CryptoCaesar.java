@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cryptocaesar;
+package Crypto.Impl.Chiffrement;
 
+import Crypto.Impl.Cle.CleCaesar;
 import Crypto.Abstraction.Chiffrement;
 import Crypto.Abstraction.Cle;
 
