@@ -49,7 +49,7 @@ public class CryptoCaesar implements Chiffrement {
                 tableauCryptage.append((char)resultat);
             } else 
             {
-                tableauCryptage.append(lettresPlainText);
+                tableauCryptage.append(lettresPlainText[i]);
             }
         }
         return tableauCryptage.toString();
@@ -80,7 +80,7 @@ public class CryptoCaesar implements Chiffrement {
                 tableauCryptage.append((char)resultat);
             } else 
             {
-                tableauCryptage.append(lettresPlainText);
+                tableauCryptage.append(lettresPlainText[i]);
             }
         }
         return tableauCryptage.toString();
