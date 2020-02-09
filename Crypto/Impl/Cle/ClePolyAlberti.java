@@ -60,10 +60,9 @@ public class ClePolyAlberti implements Cle {
     }
     
     public ClePolyAlberti(String calage, int frequence){
-        //ICI IL FAUT VERIFIER LE CALAGE ET LA LONGUEUR
-        longueur = 16;
+        longueur = calage.length();
         this.calage = calage;
-        this.frequence = frequence;
+        this.frequence = Math.abs(frequence);
     }
 
     @Override
@@ -84,5 +83,16 @@ public class ClePolyAlberti implements Cle {
     public int getFrequence()
     {
         return frequence;
+    }
+    
+    public final void setCalage(String c)
+    {
+        calage=c;
+        longueur=c.length();
+    }
+    
+    public final void setFrequence(int f)
+    {
+        frequence = Math.abs(f);
     }
 }

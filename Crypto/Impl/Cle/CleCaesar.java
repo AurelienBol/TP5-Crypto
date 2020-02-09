@@ -23,9 +23,8 @@ public class CleCaesar implements Cle{
         SecureRandom sr = new SecureRandom();
         decalage = sr.nextInt(25);
     }
-    public CleCaesar(int decalage){
-        if(decalage >= 0 && decalage < 26) this.decalage = decalage;
-        else System.err.print("CleCaesar - Décalage en dehors des limites 0 -> 25");
+    public CleCaesar(int d){
+        setDecalage(d);
     }
     
     @Override
@@ -41,6 +40,14 @@ public class CleCaesar implements Cle{
     public int getDecalage()
     {
         return decalage;
+    }
+    
+    public final void setDecalage(int d)
+    {
+        if(d >= 0 && d < 26)
+            decalage = d;
+        else
+            throw new IllegalArgumentException("Paramètre d="+d+" hors des bornes [0,26[");
     }
     
 }
