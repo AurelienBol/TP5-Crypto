@@ -58,6 +58,13 @@ public class ClePolyAlberti implements Cle {
         }
         while (frequence == 0);
     }
+    
+    public ClePolyAlberti(String calage, int frequence){
+        //ICI IL FAUT VERIFIER LE CALAGE ET LA LONGUEUR
+        longueur = 16;
+        this.calage = calage;
+        this.frequence = frequence;
+    }
 
     @Override
     public int getLongueur() {

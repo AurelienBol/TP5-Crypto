@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package securedocumentsgenerator;
+package Main;
 
+import Crypto.Abstraction.*;
+import Crypto.Impl.Cle.CleCaesar;
+import Crypto.Impl.Cle.ClePolyAlberti;
+import Crypto.Impl.Cle.MatrixKey;
 import java.awt.CardLayout;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,8 +29,8 @@ import javax.swing.text.StyledDocument;
  * @author Aurélien Bolkaerts
  */
 public class SecureDocumentsGenerator extends javax.swing.JFrame {
-
-    
+    Chiffrement chiffrement = (Chiffrement) CryptoManager.newInstance("TriumviratPrior");
+    Cle cle;
     /**
      * Creates new form TwoTextFrame
      */
@@ -75,13 +79,12 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         Matrice01Spinner = new javax.swing.JSpinner();
         Matrice10Spinner = new javax.swing.JSpinner();
         Matrice11Spinner = new javax.swing.JSpinner();
+        GoButton = new javax.swing.JButton();
         PanelAction = new javax.swing.JPanel();
         GenerateKeyBt = new javax.swing.JButton();
-        GoButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Secure Documents Generator");
-        setMaximumSize(new java.awt.Dimension(955, 300));
         setMinimumSize(new java.awt.Dimension(955, 300));
         setResizable(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
@@ -145,6 +148,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         ModePanel.setLayout(new javax.swing.BoxLayout(ModePanel, javax.swing.BoxLayout.Y_AXIS));
 
         ActioBG.add(EncryptRB);
+        EncryptRB.setSelected(true);
         EncryptRB.setText("Chiffrement");
         ModePanel.add(EncryptRB);
 
@@ -163,6 +167,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         TypePanel.setLayout(new javax.swing.BoxLayout(TypePanel, javax.swing.BoxLayout.Y_AXIS));
 
         MethodBG.add(CaesarRB);
+        CaesarRB.setSelected(true);
         CaesarRB.setText("Caesar");
         CaesarRB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,7 +241,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
 
         KeyPanel.add(AlbertiPanel, "AlbertiCard");
 
-        HillPanel.setLayout(new java.awt.GridLayout());
+        HillPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         MatricePanel.setLayout(new java.awt.GridLayout(2, 2, 5, 5));
 
@@ -258,6 +263,17 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
 
         OptionPanel.add(KeyPanel);
 
+        GoButton.setText("Go");
+        GoButton.setMaximumSize(new java.awt.Dimension(100, 25));
+        GoButton.setMinimumSize(new java.awt.Dimension(100, 25));
+        GoButton.setPreferredSize(new java.awt.Dimension(100, 25));
+        GoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GoButtonActionPerformed(evt);
+            }
+        });
+        OptionPanel.add(GoButton);
+
         PanelAction.setLayout(new javax.swing.BoxLayout(PanelAction, javax.swing.BoxLayout.Y_AXIS));
 
         GenerateKeyBt.setText("Générer Clé");
@@ -267,12 +283,6 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
             }
         });
         PanelAction.add(GenerateKeyBt);
-
-        GoButton.setText("Go");
-        GoButton.setMaximumSize(new java.awt.Dimension(100, 25));
-        GoButton.setMinimumSize(new java.awt.Dimension(100, 25));
-        GoButton.setPreferredSize(new java.awt.Dimension(100, 25));
-        PanelAction.add(GoButton);
 
         OptionPanel.add(PanelAction);
 
@@ -320,6 +330,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(CaesarRB.isSelected()){
             cardLayout.show(KeyPanel,"CaesarCard");
+            chiffrement = (Chiffrement) CryptoManager.newInstance("TriumviratPrior");
         }
     }//GEN-LAST:event_CaesarRBActionPerformed
 
@@ -331,6 +342,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(AlbertiRB.isSelected()){  
             cardLayout.show(KeyPanel,"AlbertiCard");
+            chiffrement = (Chiffrement) CryptoManager.newInstance("LeonBattistaAlberti");
         }
     }//GEN-LAST:event_AlbertiRBActionPerformed
 
@@ -338,6 +350,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
          CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(HillRB.isSelected()){
             cardLayout.show(KeyPanel,"HillCard");
+            chiffrement = (Chiffrement) CryptoManager.newInstance("LinearAlgebra");
         }
     }//GEN-LAST:event_HillRBActionPerformed
 
@@ -367,8 +380,50 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void GenerateKeyBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateKeyBtActionPerformed
-       
+        cle = CryptoManager.genereCle(chiffrement.getProvider());
+        chiffrement.init(cle);         
+        if(CaesarRB.isSelected()){
+            CleCaesar cc = (CleCaesar) cle;
+            DecalageSpinner.setValue(cc.getDecalage());
+        }else if(AlbertiRB.isSelected()){
+            ClePolyAlberti cpa = (ClePolyAlberti) cle;
+            CalageTF.setText(cpa.getCalage());
+            FrequenceSpinner.setValue(cpa.getFrequence());
+        }else if(HillRB.isSelected()){
+            MatrixKey mk = (MatrixKey) cle;
+            int[][] matrice = mk.getMatrice();
+            Matrice00Spinner.setValue(matrice[0][0]);
+            Matrice01Spinner.setValue(matrice[0][1]);
+            Matrice10Spinner.setValue(matrice[1][0]);
+            Matrice11Spinner.setValue(matrice[1][1]);
+            
+        }
     }//GEN-LAST:event_GenerateKeyBtActionPerformed
+
+    private void GoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoButtonActionPerformed
+        if(CaesarRB.isSelected()){
+            CleCaesar cc = new CleCaesar((int)DecalageSpinner.getValue());
+            cle = cc;
+        }else if(AlbertiRB.isSelected()){
+            ClePolyAlberti cpa = new ClePolyAlberti(CalageTF.getText(),(int)FrequenceSpinner.getValue());
+            cle = cpa;
+        }else if(HillRB.isSelected()){
+            int[][] matrice = new int[2][2];
+            matrice[0][0] = (int) Matrice00Spinner.getValue();
+            matrice[0][1] = (int) Matrice01Spinner.getValue();
+            matrice[1][0] = (int) Matrice10Spinner.getValue();
+            matrice[1][1] = (int) Matrice11Spinner.getValue();
+            MatrixKey mk = new MatrixKey(matrice);
+            cle = mk;
+        }
+        chiffrement.init(cle);
+        if(EncryptRB.isSelected()){
+            OutputTP.setText(chiffrement.crypte(InputTP.getText()));
+        }else{
+            OutputTP.setText(chiffrement.decrypte(InputTP.getText()));
+        }
+        
+    }//GEN-LAST:event_GoButtonActionPerformed
 
     /**
      * @param args the command line arguments

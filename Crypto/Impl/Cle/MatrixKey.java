@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hill;
+package Crypto.Impl.Cle;
 
-import Abstraction.Cle;
-import static Abstraction.Constantes.AUTHENTICATION;
-import static Abstraction.Constantes.CIPHER;
+
+import Crypto.Abstraction.Cle;
+import static Crypto.Abstraction.Constantes.*;
 import java.security.SecureRandom;
 
 /**
@@ -20,9 +20,12 @@ public class MatrixKey implements Cle{
     private int[][] matrice;
     private int type;
     
-    private static final int[] PREMIERS = {3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25};
+    private static final int[] PREMIERS = {3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25}; //Nombre premiers avec 26
     
     private void setMatrice(int[][] matrice){
+        if(matrice==null || matrice.length!=2 || matrice[0].length!=2){
+            return;
+        }
         this.matrice = matrice;
     }
     
@@ -56,6 +59,9 @@ public class MatrixKey implements Cle{
     }
     
     public MatrixKey(int[][] key){
+        if(key==null || key.length!=2 || key[0].length!=2){
+            return;
+        }
         setMatrice(key);
         setType(AUTHENTICATION);
     }

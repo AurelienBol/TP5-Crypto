@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Hill;
+package Crypto.Impl.Chiffrement;
 
-import Abstraction.Chiffrement;
-import Abstraction.Cle;
+import Crypto.Abstraction.Chiffrement;
+import Crypto.Abstraction.Cle;
+import Crypto.Impl.Cle.MatrixKey;
 import java.security.SecureRandom;
 
 /**
