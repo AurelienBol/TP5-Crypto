@@ -206,7 +206,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         DecalageLabel.setText("Décalage :");
         CaesarPanel.add(DecalageLabel);
 
-        DecalageSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 26, 1));
+        DecalageSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 26, 1));
         DecalageSpinner.setToolTipText("");
         DecalageSpinner.setMaximumSize(new java.awt.Dimension(50, 22));
         DecalageSpinner.setMinimumSize(new java.awt.Dimension(50, 22));
@@ -330,6 +330,8 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(CaesarRB.isSelected()){
             cardLayout.show(KeyPanel,"CaesarCard");
+            DecalageSpinner.setValue(0);
+
             chiffrement = (Chiffrement) CryptoManager.newInstance("TriumviratPrior");
         }
     }//GEN-LAST:event_CaesarRBActionPerformed
@@ -342,6 +344,9 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(AlbertiRB.isSelected()){  
             cardLayout.show(KeyPanel,"AlbertiCard");
+            CalageTF.setText("");
+            FrequenceSpinner.setValue(0);
+            
             chiffrement = (Chiffrement) CryptoManager.newInstance("LeonBattistaAlberti");
         }
     }//GEN-LAST:event_AlbertiRBActionPerformed
@@ -350,6 +355,11 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
          CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(HillRB.isSelected()){
             cardLayout.show(KeyPanel,"HillCard");
+            Matrice00Spinner.setValue(0);
+            Matrice01Spinner.setValue(0);
+            Matrice10Spinner.setValue(0);
+            Matrice11Spinner.setValue(0);
+            
             chiffrement = (Chiffrement) CryptoManager.newInstance("LinearAlgebra");
         }
     }//GEN-LAST:event_HillRBActionPerformed
@@ -381,48 +391,67 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
 
     private void GenerateKeyBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateKeyBtActionPerformed
         cle = CryptoManager.genereCle(chiffrement.getProvider());
-        chiffrement.init(cle);         
-        if(CaesarRB.isSelected()){
+         
+        if(CaesarRB.isSelected())
+        {
             CleCaesar cc = (CleCaesar) cle;
-            DecalageSpinner.setValue(cc.getDecalage());
-        }else if(AlbertiRB.isSelected()){
-            ClePolyAlberti cpa = (ClePolyAlberti) cle;
-            CalageTF.setText(cpa.getCalage());
-            FrequenceSpinner.setValue(cpa.getFrequence());
-        }else if(HillRB.isSelected()){
-            MatrixKey mk = (MatrixKey) cle;
-            int[][] matrice = mk.getMatrice();
-            Matrice00Spinner.setValue(matrice[0][0]);
-            Matrice01Spinner.setValue(matrice[0][1]);
-            Matrice10Spinner.setValue(matrice[1][0]);
-            Matrice11Spinner.setValue(matrice[1][1]);
+            int decalage = (int)DecalageSpinner.getValue();
             
+            if( decalage == 0)
+                DecalageSpinner.setValue(cc.getDecalage());
+            else
+                cc.setDecalage(decalage);
         }
+        else if(AlbertiRB.isSelected())
+        {
+            ClePolyAlberti cpa = (ClePolyAlberti) cle;
+            String text = CalageTF.getText();
+            int freq = (int)FrequenceSpinner.getValue();
+            
+            if(text.isEmpty())
+                CalageTF.setText(cpa.getCalage());
+            else
+                cpa.setCalage(text);
+            if(freq==0)
+                FrequenceSpinner.setValue(cpa.getFrequence());
+            else
+                cpa.setFrequence(freq);
+        }
+        else if(HillRB.isSelected())
+        {
+            MatrixKey mk = (MatrixKey) cle;
+            int m00= (int)Matrice00Spinner.getValue();
+            int m01= (int)Matrice01Spinner.getValue();
+            int m10= (int)Matrice10Spinner.getValue();
+            int m11= (int)Matrice11Spinner.getValue();
+            
+            if(m00==0 && m01==0 && m10==0 && m11==0)
+            {
+                int[][] matrice = mk.getMatrice();
+                Matrice00Spinner.setValue(matrice[0][0]);
+                Matrice01Spinner.setValue(matrice[0][1]);
+                Matrice10Spinner.setValue(matrice[1][0]);
+                Matrice11Spinner.setValue(matrice[1][1]);
+            }
+            else 
+            {
+                int[][] matr = new int[2][2];
+                matr[0][0]=m00;
+                matr[0][1]=m01;
+                matr[1][0]=m10;
+                matr[1][1]=m11;
+                mk.setMatrice(matr);
+            }   
+        }
+        
+        chiffrement.init(cle);
     }//GEN-LAST:event_GenerateKeyBtActionPerformed
 
     private void GoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoButtonActionPerformed
-        if(CaesarRB.isSelected()){
-            CleCaesar cc = new CleCaesar((int)DecalageSpinner.getValue());
-            cle = cc;
-        }else if(AlbertiRB.isSelected()){
-            ClePolyAlberti cpa = new ClePolyAlberti(CalageTF.getText(),(int)FrequenceSpinner.getValue());
-            cle = cpa;
-        }else if(HillRB.isSelected()){
-            int[][] matrice = new int[2][2];
-            matrice[0][0] = (int) Matrice00Spinner.getValue();
-            matrice[0][1] = (int) Matrice01Spinner.getValue();
-            matrice[1][0] = (int) Matrice10Spinner.getValue();
-            matrice[1][1] = (int) Matrice11Spinner.getValue();
-            MatrixKey mk = new MatrixKey(matrice);
-            cle = mk;
-        }
-        chiffrement.init(cle);
-        if(EncryptRB.isSelected()){
+        if(EncryptRB.isSelected())
             OutputTP.setText(chiffrement.crypte(InputTP.getText()));
-        }else{
+        else
             OutputTP.setText(chiffrement.decrypte(InputTP.getText()));
-        }
-        
     }//GEN-LAST:event_GoButtonActionPerformed
 
     /**
