@@ -36,7 +36,8 @@ public class CryptoManager extends Services
                     System.err.println("Erreur d'instantiation de "+nomClasse+": "+ex.getMessage());
                 }
             }
-
+            else
+                throw new IllegalArgumentException("Aucune clé trouvée pour le Provider "+nomProv);
             return null;
     }
 

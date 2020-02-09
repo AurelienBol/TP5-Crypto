@@ -34,18 +34,28 @@ public class ChiffrePolyAlberti implements Chiffrement {
         String crypteText = new String();
         // Initialisation du décalage suivant le premier caractère de la clé (on cale le caractère sur A(65))
         int asciiCalage = (int) tabCrypteCle[0] - 65;
+        // Compteur pour connaître comment caler avec la clé
+        int cptCle = 0;
         for (int i = 0; i < plainText.length(); i++)
         {
             //Modification du calage suivant la fréquence ==> Si f == 1 => on change à chaque fois
-            if (i%key.getFrequence()+1 == key.getFrequence())
+            if (i%key.getFrequence() == 0 && i!=0)
             {
-                asciiCalage = (int) tabCrypteCle[i%key.getLongueur()] - 65;
+                cptCle++;
+                asciiCalage = (int) tabCrypteCle[cptCle%key.getLongueur()] - 65;
             }
-            // Ajout du calage au plainText
-            int asciiCrypteText = asciiCalage + (int)tabPlainText[i];
-            // Si la valeur dépasse 90 continue à partir de A (65) donc on fait (-90+65 == -25)
-            if (asciiCrypteText > 90)
-                asciiCrypteText = asciiCrypteText - 25;
+            
+            int asciiCrypteText;
+            if(tabPlainText[i]>= 'A' && tabPlainText[i]<= 'Z')
+            {
+                // Ajout du calage au plainText
+                asciiCrypteText = asciiCalage + (int)tabPlainText[i];
+                // Si la valeur dépasse 90 continue à partir de A (65) donc on fait (-90+65 == -25)
+                if (asciiCrypteText > 90)
+                    asciiCrypteText = asciiCrypteText - 26;
+            }
+            else
+                asciiCrypteText=tabPlainText[i];
             crypteText += Character.toString((char) asciiCrypteText);
         }
         return crypteText;
@@ -62,18 +72,28 @@ public class ChiffrePolyAlberti implements Chiffrement {
         String plainText = new String();
         // Initialisation du décalage suivant le premier caractère de la clé (on cale le caractère sur A(65))
         int asciiCalage = (int) tabCrypteCle[0] - 65;
+        // Compteur pour connaître comment caler avec la clé
+        int cptCle = 0;
         for (int i = 0; i < cipherText.length(); i++)
         {
             //Modification du calage suivant la fréquence ==> Si f == 1 => on change à chaque fois
-            if (i%key.getFrequence()+1 == key.getFrequence())
+            if (i%key.getFrequence() == 0 && i!=0)
             {
-                asciiCalage = (int) tabCrypteCle[i%key.getLongueur()] - 65;
+                cptCle++;
+                asciiCalage = (int) tabCrypteCle[cptCle%key.getLongueur()] - 65;
             }
-            // Soustraction du calage au cipherText pour trouver le caractère en clair
-            int asciiPlainText =  (int)tabCipherText[i] - asciiCalage;
-            // Si la valeur se trouve en dessous de 65,on continue à partir de Z (90) donc on fait (90-65 == 25)
-            if (asciiPlainText < 65)
-                asciiPlainText = asciiPlainText + 25;
+            
+            int asciiPlainText;
+            if(tabCipherText[i]>= 'A' && tabCipherText[i]<= 'Z')
+            {
+                // Soustraction du calage au cipherText pour trouver le caractère en clair
+                asciiPlainText =  (int)tabCipherText[i] - asciiCalage;
+                // Si la valeur se trouve en dessous de 65,on continue à partir de Z (90) donc on fait (90-65 == 25)
+                if (asciiPlainText < 65)
+                    asciiPlainText = asciiPlainText + 26;
+            }
+            else
+                asciiPlainText=tabCipherText[i];
             plainText += Character.toString((char) asciiPlainText);
         }
         return plainText;
