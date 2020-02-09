@@ -8,7 +8,6 @@ package Crypto.Impl.Chiffrement;
 import Crypto.Abstraction.Chiffrement;
 import Crypto.Abstraction.Cle;
 import Crypto.Impl.Cle.MatrixKey;
-import java.security.SecureRandom;
 
 /**
  *
@@ -79,12 +78,11 @@ public class HillCipher implements Chiffrement {
             }
             if(pos>=text.length()) break;
         }
-        
-        //On complète le dernier bloc si nécessaire
-        SecureRandom sr = new SecureRandom();
-        while(pos < text.length()){
-            cutString[i][j] = sr.nextInt(25);
+        //On complète le dernier bloc si nécessaire avec des X
+        while(pos < nbrBloc*size){
             j++;
+            cutString[i][j] = 'X' -65;
+            pos++;
         }
         return cutString;
     }

@@ -296,7 +296,6 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void OpenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenButtonActionPerformed
-        
         SimpleAttributeSet txtAttribute = new SimpleAttributeSet();
         
         final JFileChooser chooser = new JFileChooser();
@@ -311,6 +310,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
                 while ((line = br.readLine()) != null) {
                     docInput.insertString(docInput.getLength(),line+'\n',txtAttribute);
                 }
+                docInput.remove(docInput.getLength()-1, 1);
              } catch (FileNotFoundException ex) {
                 Logger.getLogger(SecureDocumentsGenerator.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {

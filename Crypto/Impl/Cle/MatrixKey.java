@@ -18,14 +18,12 @@ import java.security.SecureRandom;
 
 public class MatrixKey implements Cle{
     private int[][] matrice;
-    private int type;
+    private int type = BOTH;
     
     private static final int[] PREMIERS = {3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25}; //Nombre premiers avec 26
     
     private void setMatrice(int[][] matrice){
-        if(matrice==null || matrice.length!=2 || matrice[0].length!=2){
-            return;
-        }
+        if(!isInvertible(matrice))return;
         this.matrice = matrice;
     }
     
@@ -35,35 +33,26 @@ public class MatrixKey implements Cle{
     
     private int[][] generateMatrice(){
         int generated[][] = new int[2][2];
-        int a,b,c,d;
         SecureRandom sr = new SecureRandom();
-        a = PREMIERS[sr.nextInt(PREMIERS.length-1)];
-        
+        generated[0][0] = PREMIERS[sr.nextInt(PREMIERS.length-1)];
         do{
-            b = sr.nextInt(25);
-            c = sr.nextInt(25);
-            d = sr.nextInt(25);
-        }while((a*d-b*c)%26==0 ||(a*d-b*c)%13==0 || (a*d-b*c)%2 == 0);// Il faut que la matrice soit réversible 
-        
-        generated[0][0]=a;
-        generated[0][1]=b;
-        generated[1][0]=c;
-        generated[1][1]=d;
+            generated[0][1] = sr.nextInt(25);
+            generated[1][0] = sr.nextInt(25);
+            generated[1][1] = sr.nextInt(25);
+        }while(!isInvertible(generated));
         
         return generated;
     }
     
     public MatrixKey(){
         setMatrice(generateMatrice());
-        setType(CIPHER);
+        setType(BOTH);
     }
     
     public MatrixKey(int[][] key){
-        if(key==null || key.length!=2 || key[0].length!=2){
-            return;
-        }
+        if(!isInvertible(key))return;
         setMatrice(key);
-        setType(AUTHENTICATION);
+        setType(BOTH);
     }
     
     @Override
@@ -80,4 +69,14 @@ public class MatrixKey implements Cle{
         return type;
     }
     
+    private boolean isInvertible(int[][] matrice){
+        if(matrice==null) return false;
+        if(matrice.length != 2 || matrice[0].length!=2) return false;
+        int a = matrice[0][0];
+        int b = matrice[0][1];
+        int c = matrice[1][0];
+        int d = matrice [1][1];
+        if((a*d-b*c)%26==0 ||(a*d-b*c)%13==0 || (a*d-b*c)%2 == 0) return false;
+        else return true;
+    }
 }
