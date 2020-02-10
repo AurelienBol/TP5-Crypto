@@ -25,6 +25,11 @@ public class ChiffrePolyAlberti implements Chiffrement {
 
     @Override
     public String crypte(String plainText) {
+        if (key == null)
+        {
+            System.err.println("Erreur clé non initialisée");
+            return null;
+        }
         // Tableau de char pour le plainText
         char tabPlainText[] = new char[plainText.length()];
         plainText.getChars(0, plainText.length(), tabPlainText, 0);
@@ -63,6 +68,11 @@ public class ChiffrePolyAlberti implements Chiffrement {
 
     @Override
     public String decrypte(String cipherText) {
+        if (key == null)
+        {
+            System.err.println("Erreur clé non initialisée");
+            return null;
+        }
         // Tableau de char pour le cipherText
         char[] tabCipherText = new char[cipherText.length()];
         cipherText.getChars(0, cipherText.length(), tabCipherText, 0);
