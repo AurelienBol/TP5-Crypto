@@ -5,7 +5,7 @@ package Crypto.Impl.Cle;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+//SALUT
 
 import Crypto.Abstraction.Cle;
 import static Crypto.Abstraction.Constantes.CIPHER;
