@@ -18,7 +18,7 @@ import java.security.SecureRandom;
 
 public class MatrixKey implements Cle{
     private int[][] matrice;
-    private int type = BOTH;
+    private int type = CIPHER;
     
     private static final int[] PREMIERS = {3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25}; //Nombre premiers avec 26
     
@@ -46,13 +46,13 @@ public class MatrixKey implements Cle{
     
     public MatrixKey(){
         setMatrice(generateMatrice());
-        setType(BOTH);
+        setType(CIPHER);
     }
     
     public MatrixKey(int[][] key){
         if(!isInvertible(key))return;
         setMatrice(key);
-        setType(BOTH);
+        setType(CIPHER);
     }
     
     @Override
