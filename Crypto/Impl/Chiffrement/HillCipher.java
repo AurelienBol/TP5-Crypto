@@ -72,7 +72,12 @@ public class HillCipher implements Chiffrement {
         int i,j = 0;
         for(i =0; i<nbrBloc; i++){
             for(j=0; j<size;j++){
-                cutString[i][j] = text.charAt(pos)-65;
+                if(text.charAt(pos)>='A'&&text.charAt(pos)<='Z')
+                    cutString[i][j] = text.charAt(pos)-'A';
+                else if(text.charAt(pos)>='a'&&text.charAt(pos)<='z')
+                    cutString[i][j] = text.charAt(pos)-'a';
+                else
+                    cutString[i][j] = 'X' - 'A';
                 pos++;
                 if(pos>=text.length()) break;
             }
