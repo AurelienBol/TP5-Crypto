@@ -264,6 +264,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         OptionPanel.add(KeyPanel);
 
         GoButton.setText("Go");
+        GoButton.setEnabled(false);
         GoButton.setMaximumSize(new java.awt.Dimension(100, 25));
         GoButton.setMinimumSize(new java.awt.Dimension(100, 25));
         GoButton.setPreferredSize(new java.awt.Dimension(100, 25));
@@ -327,6 +328,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
     }//GEN-LAST:event_UncryptRBActionPerformed
 
     private void CaesarRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CaesarRBActionPerformed
+        GoButton.setEnabled(false);
         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(CaesarRB.isSelected()){
             cardLayout.show(KeyPanel,"CaesarCard");
@@ -341,6 +343,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
     }//GEN-LAST:event_CalageTFActionPerformed
 
     private void AlbertiRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlbertiRBActionPerformed
+        GoButton.setEnabled(false);
         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(AlbertiRB.isSelected()){  
             cardLayout.show(KeyPanel,"AlbertiCard");
@@ -352,7 +355,8 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
     }//GEN-LAST:event_AlbertiRBActionPerformed
 
     private void HillRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HillRBActionPerformed
-         CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
+        GoButton.setEnabled(false);
+        CardLayout cardLayout = (CardLayout) KeyPanel.getLayout();
         if(HillRB.isSelected()){
             cardLayout.show(KeyPanel,"HillCard");
             Matrice00Spinner.setValue(0);
@@ -445,6 +449,7 @@ public class SecureDocumentsGenerator extends javax.swing.JFrame {
         }
         
         chiffrement.init(cle);
+        GoButton.setEnabled(true);
     }//GEN-LAST:event_GenerateKeyBtActionPerformed
 
     private void GoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoButtonActionPerformed
